@@ -39,21 +39,26 @@ namespace Devlooped
                 // denoted by the ending in a path separator. Note we skip 4 parts 
                 // since those are org/repo/tree/branch, then comes the actual dir.
                 return new FileSpec(
-                        flatten ? baseDir :
-                        baseDir.Length == 0 ? string.Join('/', parts.Skip(4)) :
-                        System.IO.Path.Combine(baseDir, string.Join('/', parts.Skip(4))).Replace('\\', '/') + "/",
-                    uri, finalPath: true);
+                        flatten
+                            ? baseDir
+                            : baseDir.Length == 0
+                                ? string.Join('/', parts.Skip(4))
+                                : System.IO.Path.Combine(baseDir, string.Join('/', parts.Skip(4))).Replace('\\', '/') + "/",
+                        uri,
+                        finalPath: true);
             }
             else if (parts[2] == "blob" || parts[2] == "raw")
             {
                 // This is a specific file URL, so use that as the target path.
                 // Note we skip 4 parts since those are org/repo/[blob/raw]/branch.
                 return new FileSpec(
-                        flatten ?
-                        System.IO.Path.Combine(baseDir[..^1], parts[^1]) :
-                        baseDir.Length == 0 ? string.Join('/', parts.Skip(4)) :
-                        System.IO.Path.Combine(baseDir, string.Join('/', parts.Skip(4))).Replace('\\', '/'),
-                    uri, finalPath: true);
+                        flatten
+                            ? System.IO.Path.Combine(baseDir[..^1], parts[^1])
+                            : baseDir.Length == 0
+                                ? string.Join('/', parts.Skip(4))
+                                : System.IO.Path.Combine(baseDir, string.Join('/', parts.Skip(4))).Replace('\\', '/'),
+                        uri,
+                        finalPath: true);
             }
             else
             {
@@ -72,11 +77,13 @@ namespace Devlooped
             // Note we skip 4 parts since those are org/repo/[blob/raw]/branch.
             if (uri.Host == "raw.githubusercontent.com" && parts.Length > 3)
                 return new FileSpec(
-                        flatten ?
-                        System.IO.Path.Combine(baseDir[..^1], parts[^1]) :
-                        baseDir.Length == 0 ? string.Join('/', parts.Skip(3)) :
-                        System.IO.Path.Combine(baseDir, string.Join('/', parts.Skip(3))).Replace('\\', '/'),
-                    uri, finalPath: true);
+                        flatten
+                            ? System.IO.Path.Combine(baseDir[..^1], parts[^1])
+                            : baseDir.Length == 0
+                                ? string.Join('/', parts.Skip(3))
+                                : System.IO.Path.Combine(baseDir, string.Join('/', parts.Skip(3))).Replace('\\', '/'),
+                        uri,
+                        finalPath: true);
 
             return next(uri);
         }

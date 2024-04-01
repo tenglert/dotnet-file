@@ -232,7 +232,7 @@ namespace Devlooped
                             File.Delete(tempPath);
                             throw;
                         }
-#if NETCOREAPP2_1
+#if NETCOREAPP2_1 || NETFRAMEWORK
                         if (File.Exists(path))
                             File.Delete(path);
 
